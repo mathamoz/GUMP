@@ -252,78 +252,7 @@ class GUMP
 		$resp = array();
 		
 		foreach($this->errors as $e) {
-		
-			$field = ucwords(str_replace(array('_','-'), chr(32), $e['field']));
-			$param = $e['param'];
-			
-			switch($e['rule']) {
-				case 'validate_required':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required";
-					break;
-				case 'validate_valid_email':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid email address";				
-					break;				
-				case 'validate_max_len':
-					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param character";										
-					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param characters";				
-					}
-					break;
-				case 'validate_min_len':
-					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param character";
-					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param characters";						
-					}
-					break;			
-				case 'validate_exact_len':
-					if($param == 1) {				
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param character in length";										
-					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters in length";				
-					}
-					break;				
-				case 'validate_alpha':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters(a-z)";								
-					break;
-				case 'validate_alpha_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha-numeric characters";												
-					break;
-				case 'validate_alpha_dash':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters &amp; dashes";																
-					break;				
-				case 'validate_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain numeric characters";																				
-					break;
-				case 'validate_integer':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a numeric value";																								
-					break;
-				case 'validate_boolean':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a true or false value";																												
-					break;
-				case 'validate_float':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a float value";																												
-					break;			
-				case 'validate_valid_url':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid URL";																												
-					break;				
-				case 'validate_url_exists':
-					$resp[] = "The <span class=\"$field_class\">$field</span> URL does not exist";																																
-					break;				
-				case 'validate_valid_ip':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid IP address";																																
-					break;			
-				case 'validate_valid_cc':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid credit card number";																																
-					break;																			
-				case 'validate_valid_name':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid human name";																																
-					break;				
-				case 'validate_contains':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs contain one of these values: ".implode(', ', $param);																																
-					break;					
-			}
+			$resp[] = $this->get_readable_error($e, $field_class);
 		}		
 		
 		if(!$convert_to_string) {
@@ -337,6 +266,68 @@ class GUMP
 		}
 	}
 	
+	/**
+	* Return a readable representation of the requested rule
+	*
+	* @param array $e
+	* @param string $field_class
+	* @return string
+	*/
+	public function get_readable_error($e, $field_class="field")
+	{
+		$field = ucwords(str_replace(array('_','-'), chr(32), $e['field']));
+		$param = $e['param'];
+		switch($e['rule']) {
+				case 'validate_required':
+					return "The <span class=\"$field_class\">$field</span> field is required";
+				case 'validate_valid_email':
+					return "The <span class=\"$field_class\">$field</span> field is required to be a valid email address";				
+				case 'validate_max_len':
+					if($param == 1) {
+						return "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param character";										
+					} else {
+						return "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param characters";				
+					}
+				case 'validate_min_len':
+					if($param == 1) {
+						return "The <span class=\"$field_class\">$field</span> field needs to be longer than $param character";
+					} else {
+						return "The <span class=\"$field_class\">$field</span> field needs to be longer than $param characters";						
+					}
+				case 'validate_exact_len':
+					if($param == 1) {				
+						return "The <span class=\"$field_class\">$field</span> field needs to be exactly $param character in length";										
+					} else {
+						return "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters in length";				
+					}
+				case 'validate_alpha':
+					return "The <span class=\"$field_class\">$field</span> field may only contain alpha characters(a-z)";								
+				case 'validate_alpha_numeric':
+					return "The <span class=\"$field_class\">$field</span> field may only contain alpha-numeric characters";												
+				case 'validate_alpha_dash':
+					return "The <span class=\"$field_class\">$field</span> field may only contain alpha characters &amp; dashes";																
+				case 'validate_numeric':
+					return "The <span class=\"$field_class\">$field</span> field may only contain numeric characters";																				
+				case 'validate_integer':
+					return "The <span class=\"$field_class\">$field</span> field may only contain a numeric value";																								
+				case 'validate_boolean':
+					return "The <span class=\"$field_class\">$field</span> field may only contain a true or false value";																												
+				case 'validate_float':
+					return "The <span class=\"$field_class\">$field</span> field may only contain a float value";																												
+				case 'validate_valid_url':
+					return "The <span class=\"$field_class\">$field</span> field is required to be a valid URL";																												
+				case 'validate_url_exists':
+					return "The <span class=\"$field_class\">$field</span> URL does not exist";																																
+				case 'validate_valid_ip':
+					return "The <span class=\"$field_class\">$field</span> field needs to contain a valid IP address";																																
+				case 'validate_valid_cc':
+					return "The <span class=\"$field_class\">$field</span> field needs to contain a valid credit card number";																																
+				case 'validate_valid_name':
+					return "The <span class=\"$field_class\">$field</span> field needs to contain a valid human name";																																
+				case 'validate_contains':
+					return "The <span class=\"$field_class\">$field</span> field needs contain one of these values: ".implode(', ', $param);																																
+			}
+	}
 	/**
 	 * Filter the input data according to the specified filter set 
 	 * 

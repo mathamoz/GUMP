@@ -21,7 +21,8 @@ xss_clean(array $data); // Strips and encodes unwanted characters
 sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
 validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
 filter(array $input, array $filterset); // Filters input data according to the provided filterset (see example)
-get_readable_errors($convert_to_string = false); // Returns human readable error text in an array or string
+get_readable_errors($convert_to_string = false, $field_class="field", $error_class="error-message"); // Returns human readable error text in an array or string
+get_readable_error(array $e, $field_class); // Returns human readable text for a specific error
 ```
 
 #  Complete Working Example
